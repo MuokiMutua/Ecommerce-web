@@ -7,20 +7,20 @@ Built with Flask and integrated with Daraja for mobile payments,
 this platform aims to streamline the process of buying and selling farm-fresh products while supporting local agriculture.
 
 ## Features
-User-friendly interface for browsing and purchasing agricultural products
-Farmer profiles and product listings
-Shopping cart functionality
-Secure checkout process
-Integration with Daraja API for M-Pesa mobile payments
-Admin panel for managing products, orders, and users
+1.User-friendly interface for browsing and purchasing agricultural products
+2.Farmer profiles and product listings
+3.Shopping cart functionality
+4.Secure checkout process
+5.Integration with Daraja API for M-Pesa mobile payments
+6.Admin panel for managing products, orders, and users
 
 ## Technology Stack
-Backend: Flask (Python)
-Frontend: HTML, CSS, JavaScript
-Database: SQLAlchemy with SQLite (for development) / PostgreSQL (for production)
-Payment Integration: Daraja API (M-Pesa)
-Authentication: Flask-Login
-Form Handling: Flask-WTF
+1.Backend: Flask (Python)
+2.Frontend: HTML, CSS, JavaScript
+3.Database: SQLAlchemy with SQLite (for development) / PostgreSQL (for production)
+4.Payment Integration: Daraja API (M-Pesa)
+5.Authentication: Flask-Login
+6.Form Handling: Flask-WTF
 
 ## Acknowledgements
 
