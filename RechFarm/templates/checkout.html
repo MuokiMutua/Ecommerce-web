@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RechFarm - Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='checkout.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='mediaqueries.css') }}" />
+</head>
+<body>
+    <nav>
+        <div class="logo">RechFarm</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('index') }}">Products</a></li>
+        </ul>
+    </nav>
+
+    <section id="checkout">
+        <h1>Checkout</h1>
+        <div class="checkout-container">
+            <!-- Billing and Shipping Form -->
+            <div class="billing-shipping">
+                <h2>Billing and Shipping</h2>
+                <form action="{{ url_for('order_confirmation') }}" method="post">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required><br>
+                
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required><br>
+                
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" required><br>
+                
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br>
+                
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required><br>
+                
+                    <label for="town_city">Town/City:</label>
+                    <input type="text" id="town_city" name="town_city" required><br>
+
+                    <h3>Payment Options</h3>
+                    <label>
+                        <input type="radio" name="payment_method" value="cash_on_delivery" required />
+                        Cash on Delivery
+                    </label><br>
+                    <label>
+                        <input type="radio" name="payment_method" value="mpesa" required />
+                        Mobile Payment using M-Pesa
+                    </label><br>
+
+                    <!-- Mobile number field for M-Pesa -->
+                    <div id="mpesa-section" style="display: none;">
+                        <label for="mpesa_number">M-Pesa Number:</label>
+                        <input type="text" id="mpesa_number" name="mpesa_number"><br>
+                    </div>
+
+                    <button type="submit">Confirm Order</button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2>Your Order</h2>
+                <div class="order-items">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in session.get('cart', []) %}
+                            <tr>
+                                <td><img src="{{ url_for('static', filename=item['image']) }}" alt="{{ item['name'] }}"></td>
+                                <td>{{ item['name'] }}</td>
+                                <td>{{ item['quantity'] }}</td>
+                                <td>Ksh {{ item['price'] * item['quantity'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="order-total">
+                    <h3>Total: Ksh {{ total_price }}</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--<footer>
+        <p>&copy; 2024 RechFarm. All rights reserved.</p>
+    </footer> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all payment method inputs and the M-Pesa section
+            const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+            const mpesaSection = document.getElementById('mpesa-section');
+            
+            // Function to toggle M-Pesa section visibility
+            const toggleMpesaSection = () => {
+                const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked');
+                if (selectedPaymentMethod && selectedPaymentMethod.value === 'mpesa') {
+                    mpesaSection.style.display = 'block';
+                } else {
+                    mpesaSection.style.display = 'none';
+                }
+            };
+    
+            // Attach change event listeners to payment method inputs
+            paymentMethods.forEach((elem) => {
+                elem.addEventListener('change', toggleMpesaSection);
+            });
+    
+            // Set initial state on page load
+            toggleMpesaSection();
+        });
+    </script>
+    
+</body>
+</html>

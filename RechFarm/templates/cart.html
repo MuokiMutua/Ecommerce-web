@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RechFarm - Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='mediaqueries.css') }}" />
+</head>
+<body>
+    <nav>
+        <div class="logo">RechFarm</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('index') }}">Products</a></li>
+            <li><a href="{{ url_for('cart') }}" class="active">Cart</a></li>
+        </ul>
+    </nav>
+
+    <section id="cart">
+        <h1>Your Cart</h1>
+        {% if cart_items %}
+            <div class="cart-items">
+                {% for item in cart_items %}
+                    <div class="cart-item">
+                        <img src="{{ url_for('static', filename=item['image']) }}" >
+                        <h3>{{ item['name'] }}</h3>
+                        <p>Price: Ksh {{ item['price'] }}</p>
+                        <p>Quantity: {{ item['quantity'] }}</p>
+                        <form action="{{ url_for('update_cart') }}" method="post" class="cart-update-form">
+                            <input type="hidden" name="name" value="{{ item['name'] }}">
+                            <input type="number" name="quantity" value="{{ item['quantity'] }}" min="1" class="quantity-input" />
+                            <button type="submit" class="btn btn-color-1">Update</button>
+                        </form>
+                        <form action="{{ url_for('remove_from_cart') }}" method="post" class="cart-remove-form">
+                            <input type="hidden" name="name" value="{{ item['name'] }}">
+                            <button type="submit" class="btn btn-remove">Remove</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                <h2>Total Price: Ksh {{ total_price }}</h2>
+            </div>
+            <div class="cart-total">
+                <h3>Total: Ksh {{ total_price }}</h3>
+                <a href="{{ url_for('checkout') }}" class="btn btn-color-2">Proceed to Checkout</a>
+            </div>
+        {% else %}
+            <p>Your cart is empty. <a href="{{ url_for('index') }}">Continue shopping</a>.</p>
+        {% endif %}
+    </section>
+
+    <!--<footer>
+        <p>&copy; 2024 RechFarm. All rights reserved.</p>
+    </footer> -->
+</body>
+</html>

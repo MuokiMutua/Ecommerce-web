@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='order_confirmation.css') }}" />
+</head>
+<body>
+    <header>
+        <div class="logo">RechFarm</div>
+    </header>
+    <main>
+        <h1>Order Confirmation</h1>
+
+        <section class="order-summary-section">
+            <h2>Your Order</h2>
+            <div class="order-summary">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['quantity'] }}</td>
+                            <td>Ksh {{ item['price'] * item['quantity'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Total: Ksh {{ total_price }}</h3>
+            </div>
+        </section>
+
+        <section class="billing-info-section">
+            <h2>Billing Information</h2>
+            {% if billing_info %}
+            <ul>
+                <li>First Name: {{ billing_info['first_name'] }}</li>
+                <li>Last Name: {{ billing_info['last_name'] }}</li>
+                <li>Phone: {{ billing_info['phone'] }}</li>
+                <li>Email: {{ billing_info['email'] }}</li>
+                <li>Address: {{ billing_info['address'] }}</li>
+                <li>Town/City: {{ billing_info['town_city'] }}</li>
+            </ul>
+            {% else %}
+            <p>Billing information is not available.</p>
+            {% endif %}
+        </section>
+
+        <section class="payment-info-section">
+            <h2>Payment Information</h2>
+            <p>Payment Method: {{ payment_method }}</p>
+            {% if payment_method == 'mpesa' %}
+            <p>M-Pesa Number: {{ mpesa_number }}</p>
+            <p>STK Push Response: {{ response | tojson }}</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

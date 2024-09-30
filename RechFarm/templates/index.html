@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RechFarm - Farmer's Agri-Commerce</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    
+</head>
+<body>
+    <nav id="desktop-nav">
+        <div class="logo">RechFarm</div>
+        <div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="nav-item dropdown">
+                    <a href="{{ url_for('cart') }}" id="cart-icon">
+                        <img src="{{ url_for('static', filename='images/cart.na.png') }}" alt="Cart">
+                        <span id="cart-count" class="badge">{{ session.get('cart', [])|length }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="hamburger-nav">
+        <div class="logo">RechFarm</div>
+        <div class="hamburger-menu">
+            <div class="hamburger-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-links">
+                <li><a href="#home" onclick="toggleMenu()">Home</a></li>
+                <li><a href="#about" onclick="toggleMenu()">About</a></li>
+                <li><a href="#services" onclick="toggleMenu()">Services</a></li>
+                <li><a href="#products" onclick="toggleMenu()">Products</a></li>
+                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Locally Farmed Organic Produce</h1>
+                <p>Discover fresh, organic produce straight from our farm to your table.</p>
+                <a href="#products" class="btn">Shop Now</a>
+            </div>
+            <div class="hero-image">
+                <img src="/static/images/farmer in field.jpg" alt="Farmer in field">
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h1>About Us</h1>
+        <p class="section__text__p1">Know More About Our Farm</p>
+        <div class="section-container">
+            <div class="section__pic-container">
+                <img src="/static/images/farm_pic.jpg" alt="Farm picture" class="about-pic" />
+            </div>
+            <div class="about-details-container">
+                <div class="text-container">
+                    <p>
+                        RechFarm is dedicated to sustainable farming practices, providing high-quality, fresh produce to our customers. With a commitment to organic farming and community support, we strive to bring the best of nature to your doorstep.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products">
+        <h1>Our Products</h1>
+        <div class="product-list">
+            {% for product in [
+                {'name': 'Honey', 'price': '250', 'description': 'Pure honey harvested locally.', 'image': 'images/honey.jpg'},
+                {'name': 'Coriander', 'price': '25', 'description': 'Fresh coriander leaves.', 'image': 'images/coriander.jpg'},
+                {'name': 'Watermelon', 'price': '150', 'description': 'Juicy watermelon fruit.', 'image': 'images/watermelon.jpg'},
+                {'name': 'Eggs', 'price': '20', 'description': 'Fresh farm eggs.', 'image': 'images/eggs.jpg'},
+                {'name': 'Tomatoes', 'price': '10', 'description': 'Organic tomatoes.', 'image': 'images/tomatoes.jpg'},
+                {'name': 'Pawpaw', 'price': '70', 'description': 'Fresh pawpaw fruit.', 'image': 'images/pawpaw.jpg'},
+                {'name': 'Chicken', 'price': '630', 'description': 'Whole farm-raised chicken.', 'image': 'images/chicken.jpg'}
+            ] %}
+            <div class="product">
+                <img src="{{ url_for('static', filename=product['image']) }}" alt="{{ product['name'] }}">
+                <h3>{{ product['name'] }}</h3>
+                <p>{{ product['description'] }}</p>
+                <div class="product-details">
+                    <span class="price">Ksh {{ product['price'] }}</span>
+                    <form action="{{ url_for('add_to_cart') }}" method="post">
+                        <input type="hidden" name="name" value="{{ product['name'] }}">
+                        <input type="hidden" name="price" value="{{ product['price'] }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="image" value="{{ product['image'] }}">
+                        <button type="submit" class="btn btn-color-1">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="contact">
+        <h1>Contact Us</h1>
+        <div class="contact-info-upper-container">
+            <div class="contact-info-container">
+                <img src="{{ url_for('static', filename='images/email.png') }}" alt="Email icon" class="icon contact-icon email-icon" />
+                <p><a href="mailto:examplemail@gmail.com">rechfarm@example.com</a></p>
+            </div>
+            <div class="contact-info-container">
+                <img src="{{ url_for('static', filename='images/here.png') }}" alt="Location icon" class="icon contact-icon" />
+                <p>Kitui County, Kithyoko</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 RechFarm. All rights reserved.</p>
+    </footer>
+</body>
+</html>
